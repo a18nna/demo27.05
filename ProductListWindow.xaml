@@ -1,0 +1,134 @@
+﻿<Window x:Class="demo27._05.ProductListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:demo27._05"
+        mc:Ignorable="d"
+        Title="Список товаров" Height="450" Width="800" Icon="/Images/Icon.png">
+
+    <Window.Resources>
+        
+
+        <Style x:Key="ProductCardBorderStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <Style x:Key="InnerBlockStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="{Binding RowBackground, Mode=OneWay}"/>
+        </Style>
+    </Window.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <ItemsControl ItemsSource="{Binding Products, Mode=OneWay}" >
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Style="{StaticResource ProductCardBorderStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="110"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Фото -->
+                            <Border Grid.Column="0"
+        Style="{StaticResource InnerBlockStyle}"
+        Margin="0,0,5,0"
+        MinHeight="140"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
+                                
+                            </Border>
+
+                            <!-- Информация -->
+                            <Border Grid.Column="1"
+                                    Style="{StaticResource InnerBlockStyle}"
+                                    Margin="0,0,5,0"
+                                    Padding="8">
+                                <StackPanel>
+                                    <TextBlock FontSize="15" FontWeight="Bold" Margin="0,0,0,5">
+                                        <Run Text="{Binding Category, Mode=OneWay}"/>
+                                        <Run Text=" | "/>
+                                        <Run Text="{Binding Name, Mode=OneWay}"/>
+                                    </TextBlock>
+
+                                    <TextBlock TextWrapping="Wrap" Margin="0,2,0,2">
+                                        <Run Text="Описание товара: " FontWeight="Bold"/>
+                                        <Run Text="{Binding Description, Mode=OneWay}"/>
+                                    </TextBlock>
+
+                                    <TextBlock Margin="0,2,0,2">
+                                        <Run Text="Производитель: " FontWeight="Bold"/>
+                                        <Run Text="{Binding Manufacturer, Mode=OneWay}"/>
+                                    </TextBlock>
+
+                                    <TextBlock Margin="0,2,0,2">
+                                        <Run Text="Поставщик: " FontWeight="Bold"/>
+                                        <Run Text="{Binding Supplier, Mode=OneWay}"/>
+                                    </TextBlock>
+
+                                    <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                        <TextBlock Text="Цена: " FontWeight="Bold"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding OldPriceString, Mode=OneWay}"
+                                                       Foreground="Red"
+                                                       TextDecorations="Strikethrough"/>
+                                            <TextBlock Text="{Binding FinalPriceString, Mode=OneWay}"
+                                                       Margin="8,0,0,0"
+                                                       Foreground="Black"/>
+                                        </StackPanel>
+
+                                        <TextBlock Text="{Binding OldPriceString, Mode=OneWay}" Foreground="Black"/>
+                                    </StackPanel>
+
+                                    <TextBlock Margin="0,2,0,2">
+                                        <Run Text="Единица измерения: " FontWeight="Bold"/>
+                                        <Run Text="{Binding Unit, Mode=OneWay}"/>
+                                    </TextBlock>
+
+                                    <TextBlock Margin="0,2,0,2">
+                                        <Run Text="Количество на складе: " FontWeight="Bold"/>
+                                        <Run Text="{Binding Quantity, Mode=OneWay}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Скидка -->
+                            <Border Grid.Column="2"
+                                    Style="{StaticResource InnerBlockStyle}"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Padding="5">
+                            <TextBlock TextAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontWeight="Bold"
+                                           FontSize="14"
+                                           TextWrapping="Wrap">
+                                    <Run Text="Действующая"/>
+                                    <LineBreak/>
+                                    <Run Text="скидка"/>
+                                    <LineBreak/>
+                                    <Run Text="{Binding Discount, Mode=OneWay}"/>
+                                    <Run Text="%"/>
+                                </TextBlock>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
+</Window>

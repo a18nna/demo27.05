@@ -1,0 +1,20 @@
+﻿<Window x:Class="demo27._05.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:demo27._05"
+        mc:Ignorable="d"
+        Title="Авторизация" Height="450" Width="800" Icon="/Images/Icon.png">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" Orientation="Vertical" VerticalAlignment="Center">
+            <Image Height="100" Width="100" Source="/Images/Icon.png"/>
+            <TextBlock TextWrapping="Wrap" Text="Логин" Margin="0,30,0,0" HorizontalAlignment="Center"/>
+            <TextBox x:Name="loginTextBox" TextWrapping="Wrap" Width="200"/>
+            <TextBlock TextWrapping="Wrap" Text="Пароль" Margin="0,10,0,0" HorizontalAlignment="Center"/>
+            <TextBox x:Name="passwordTextBox" TextWrapping="Wrap" Width="200"/>
+            <Button x:Name="loginButton" Content="Войти" Margin="0,20,0,0" Width="200" Click="loginButton_Click"/>
+            <Button x:Name="loginAsGuest" Content="Войти как гость" Margin="0,13,0,0" Width="200" Click="loginAsGuest_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

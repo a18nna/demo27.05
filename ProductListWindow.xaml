@@ -8,127 +8,125 @@
         Title="Список товаров" Height="450" Width="800" Icon="/Images/Icon.png">
 
     <Window.Resources>
-        
-
         <Style x:Key="ProductCardBorderStyle" TargetType="Border">
             <Setter Property="BorderBrush" Value="Black"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Margin" Value="10"/>
             <Setter Property="Padding" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
         </Style>
 
         <Style x:Key="InnerBlockStyle" TargetType="Border">
             <Setter Property="BorderBrush" Value="Black"/>
             <Setter Property="BorderThickness" Value="1.5"/>
-            <Setter Property="Background" Value="White"/>
             <Setter Property="Background" Value="{Binding RowBackground, Mode=OneWay}"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
         </Style>
     </Window.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <ItemsControl ItemsSource="{Binding Products, Mode=OneWay}" >
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+    <DockPanel>
+        <!-- Верхняя панель: поиск, фильтр, сортировка, имя пользователя -->
+        <Border DockPanel.Dock="Top" BorderBrush="Black" BorderThickness="0,0,0,2" Padding="10">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="10,0,0,0">
+                    <TextBox x:Name="SearchTextBox" Width="250" VerticalAlignment="Center" Margin="0,0,10,0" TextChanged="SearchTextBox_TextChanged"/>
+                    <ComboBox x:Name="SupplierFilterComboBox" DisplayMemberPath="Name" Width="150" Margin="0,0,10,0" VerticalAlignment="Center" SelectionChanged="SupplierFilterComboBox_SelectionChanged"/>
+                    <ComboBox x:Name="SortComboBox" VerticalAlignment="Center" Width="150" SelectionChanged="SortComboBox_SelectionChanged">
+                        <ComboBoxItem Content="По количеству (возр.)"/>
+                        <ComboBoxItem Content="По количеству (убыв.)"/>
+                    </ComboBox>
+                </StackPanel>
 
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border Style="{StaticResource ProductCardBorderStyle}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="160"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="110"/>
-                            </Grid.ColumnDefinitions>
+                <TextBlock x:Name="UserNameTextBlock" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+            </DockPanel>
+        </Border>
 
-                            <!-- Фото -->
-                            <Border Grid.Column="0"
-        Style="{StaticResource InnerBlockStyle}"
-        Margin="0,0,5,0"
-        MinHeight="140"
-        HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch">
-                                
-                            </Border>
+        <Button x:Name="ExitButtonClick" Content="Выйти" VerticalAlignment="Bottom" HorizontalAlignment="Left" Click="ExitButtonClick_Click" Margin="10" DockPanel.Dock="Bottom"/>
 
-                            <!-- Информация -->
-                            <Border Grid.Column="1"
-                                    Style="{StaticResource InnerBlockStyle}"
-                                    Margin="0,0,5,0"
-                                    Padding="8">
-                                <StackPanel>
-                                    <TextBlock FontSize="15" FontWeight="Bold" Margin="0,0,0,5">
-                                        <Run Text="{Binding Category, Mode=OneWay}"/>
-                                        <Run Text=" | "/>
-                                        <Run Text="{Binding Name, Mode=OneWay}"/>
-                                    </TextBlock>
+        <!-- Список товаров -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" DockPanel.Dock="Bottom">
+            <ItemsControl ItemsSource="{Binding Products, Mode=OneWay}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
 
-                                    <TextBlock TextWrapping="Wrap" Margin="0,2,0,2">
-                                        <Run Text="Описание товара: " FontWeight="Bold"/>
-                                        <Run Text="{Binding Description, Mode=OneWay}"/>
-                                    </TextBlock>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource ProductCardBorderStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="160"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="140"/>
+                                </Grid.ColumnDefinitions>
 
-                                    <TextBlock Margin="0,2,0,2">
-                                        <Run Text="Производитель: " FontWeight="Bold"/>
-                                        <Run Text="{Binding Manufacturer, Mode=OneWay}"/>
-                                    </TextBlock>
+                                <!-- Фото -->
+                                <Border Grid.Column="0" Style="{StaticResource InnerBlockStyle}" Margin="0,0,5,0" MinHeight="140">
+                                    <Image Source="{Binding ImagePath}" Stretch="Uniform"/>
+                                </Border>
 
-                                    <TextBlock Margin="0,2,0,2">
-                                        <Run Text="Поставщик: " FontWeight="Bold"/>
-                                        <Run Text="{Binding Supplier, Mode=OneWay}"/>
-                                    </TextBlock>
+                                <!-- Информация -->
+                                <Border Grid.Column="1" Style="{StaticResource InnerBlockStyle}" Margin="0,0,5,0" Padding="8">
+                                    <StackPanel>
+                                        <TextBlock FontSize="15" FontWeight="Bold" Margin="0,0,0,5">
+                                            <Run Text="{Binding Category, Mode=OneWay}"/>
+                                            <Run Text=" | "/>
+                                            <Run Text="{Binding Name, Mode=OneWay}"/>
+                                        </TextBlock>
 
-                                    <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
-                                        <TextBlock Text="Цена: " FontWeight="Bold"/>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding OldPriceString, Mode=OneWay}"
-                                                       Foreground="Red"
-                                                       TextDecorations="Strikethrough"/>
-                                            <TextBlock Text="{Binding FinalPriceString, Mode=OneWay}"
-                                                       Margin="8,0,0,0"
-                                                       Foreground="Black"/>
+                                        <TextBlock TextWrapping="Wrap" Margin="0,2,0,2">
+                                            <Run Text="Описание товара: " FontWeight="Bold"/>
+                                            <Run Text="{Binding Description, Mode=OneWay}"/>
+                                        </TextBlock>
+
+                                        <TextBlock Margin="0,2,0,2">
+                                            <Run Text="Производитель: " FontWeight="Bold"/>
+                                            <Run Text="{Binding Manufacturer, Mode=OneWay}"/>
+                                        </TextBlock>
+
+                                        <TextBlock Margin="0,2,0,2">
+                                            <Run Text="Поставщик: " FontWeight="Bold"/>
+                                            <Run Text="{Binding Supplier, Mode=OneWay}"/>
+                                        </TextBlock>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                            <TextBlock Text="Цена: " FontWeight="Bold"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding OldPriceString, Mode=OneWay}" Foreground="Red" TextDecorations="Strikethrough"/>
+                                                <TextBlock Text="{Binding FinalPriceString, Mode=OneWay}" Margin="8,0,0,0"/>
+                                            </StackPanel>
                                         </StackPanel>
 
-                                        <TextBlock Text="{Binding OldPriceString, Mode=OneWay}" Foreground="Black"/>
+                                        <TextBlock Margin="0,2,0,2">
+                                            <Run Text="Единица измерения: " FontWeight="Bold"/>
+                                            <Run Text="{Binding Unit, Mode=OneWay}"/>
+                                        </TextBlock>
+
+                                        <TextBlock Margin="0,2,0,2">
+                                            <Run Text="Количество на складе: " FontWeight="Bold"/>
+                                            <Run Text="{Binding Quantity, Mode=OneWay}"/>
+                                        </TextBlock>
                                     </StackPanel>
+                                </Border>
 
-                                    <TextBlock Margin="0,2,0,2">
-                                        <Run Text="Единица измерения: " FontWeight="Bold"/>
-                                        <Run Text="{Binding Unit, Mode=OneWay}"/>
+                                <!-- Скидка -->
+                                <Border Grid.Column="2" Style="{StaticResource InnerBlockStyle}" Padding="5">
+                                    <TextBlock TextAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="14" TextWrapping="Wrap">
+                                        <Run Text="Действующая"/>
+                                        <LineBreak/>
+                                        <Run Text="скидка"/>
+                                        <LineBreak/>
+                                        <Run Text="{Binding Discount, Mode=OneWay}"/>
+                                        <Run Text="%"/>
                                     </TextBlock>
-
-                                    <TextBlock Margin="0,2,0,2">
-                                        <Run Text="Количество на складе: " FontWeight="Bold"/>
-                                        <Run Text="{Binding Quantity, Mode=OneWay}"/>
-                                    </TextBlock>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Скидка -->
-                            <Border Grid.Column="2"
-                                    Style="{StaticResource InnerBlockStyle}"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    Padding="5">
-                            <TextBlock TextAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           FontWeight="Bold"
-                                           FontSize="14"
-                                           TextWrapping="Wrap">
-                                    <Run Text="Действующая"/>
-                                    <LineBreak/>
-                                    <Run Text="скидка"/>
-                                    <LineBreak/>
-                                    <Run Text="{Binding Discount, Mode=OneWay}"/>
-                                    <Run Text="%"/>
-                                </TextBlock>
-                            </Border>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </ScrollViewer>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
 </Window>

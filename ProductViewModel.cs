@@ -30,7 +30,9 @@ namespace demo27._05
         public string Manufacture => _product.Fabric?.fabric1 ?? "-";
         public string Supplier => _product.Supplier?.supplier1 ?? "-";
 
-        public string ImagePath => _product.photo;
+        public string ImagePath => "\\Images\\" + (_product.photo ?? "picture.png");
+
+        
 
         // Вычисляемые свойства для отображения цены
         public bool IsDiscounted => Discount > 0;

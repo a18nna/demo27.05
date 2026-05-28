@@ -41,7 +41,7 @@ namespace demo27._05
 
         private void OpenProductList(User user)
         {
-            var productList = new ProductListWindow();
+            var productList = new ProductListWindow(user);
             productList.Show();
             this.Close();
         }
